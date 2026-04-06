@@ -1,0 +1,51 @@
+# Starter pipeline
+# Start with a minimal pipeline that you can customize to build and deploy your code.
+# Add steps that build, run tests, deploy, and more:
+# https://aka.ms/yaml
+
+trigger:
+- main
+
+pool:
+  vmImage: ubuntu-latesttrigger:
+- main   # Runs pipeline when code is pushed to main branch
+
+pool:
+  vmImage: 'ubuntu-latest'   # Uses Azure hosted Ubuntu agent
+
+steps:
+
+# Step 1: Checkout code from repo
+- checkout: self
+
+# Step 2: Set up Python environment
+- task: UsePythonVersion@0
+  inputs:
+    versionSpec: '3.x'
+  displayName: 'Set up Python'
+
+# Step 3: Install dependencies
+- script: |
+    python -m pip install --upgrade pip
+    pip install -r requirements.txt
+  displayName: 'Install dependencies'
+
+# Step 4: Run a basic test (sanity check)
+- script: |
+    python -c "print('Campus Maintenance System Pipeline Running Successfully')"
+  displayName: 'Run test script'
+
+# Step 5: (Optional) Run Flask app check
+- script: |
+    echo "Checking Flask app..."
+    python app.py
+  displayName: 'Run Flask App (Optional)'
+
+steps:
+- script: echo Hello, world!
+  displayName: 'Run a one-line script'
+
+- script: |
+    echo Add other tasks to build, test, and deploy your project.
+    echo See https://aka.ms/yaml
+  displayName: 'Run a multi-line script'
